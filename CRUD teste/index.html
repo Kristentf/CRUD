@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD de Usuários</title>
+
+    <!-- Importando Bootstrap para estilização -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&quot; rel=" stylesheet">
+
+    <!-- Importando ícones do Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" &gt; <link
+        rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" &gt; <style>
+    /* Estilização do container principal */
+    .container {
+    max-width: 500px;
+    margin-top: 50px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Mensagem de sucesso ou erro */
+    #mensagem {
+    display: none;
+    font-weight: bold;
+    margin-top: 10px;
+    }
+    </style>
+</head>
+
+<body class="bg-light">
+    <div class="container">
+        <h1 class="text-center">Cadastro de Usuários</h1>
+
+        <!-- Formulário de cadastro -->
+        <form id="form">
+            <input type="hidden" id="id">
+
+            <div class="mb-3">
+                <input type="text" id="nome" class="form-control" placeholder="Seu nome" required>
+            </div>
+
+            <!-- Botão de salvar com o mesmo estilo dos outros botões -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-outline-primary btn-sm p-2">
+                    <i class="fa-solid fa-floppy-disk fs-4"></i> <!-- Ícone de disquete do Font Awesome -->
+                </button>
+            </div>
+
+        </form>
+
+        <!-- Mensagem de sucesso ou erro -->
+        <p id="mensagem" class="text-center"></p>
+
+        <h2 class="mt-4">Lista de Usuários</h2>
+
+        <!-- Lista de usuários cadastrados -->
+        <ul id="lista" class="list-group"></ul>
+    </div>
+
+    <script>
+        // Função para carregar usuários do backend e exibir na lista
+        function carregarUsuarios() {
+            fetch("http://localhost:3000/usuarios&quot;)
+                .then(response => response.json()) // Converte resposta para JSON
+                .then(usuarios => {
+                    const lista = document.getElementById("lista");
+                    lista.innerHTML = ""; // Limpa a lista antes de atualizar
+
+                    usuarios.forEach(usuario => {
+                        // Criando elementos da lista de usuários com botões de edição e remoção
+                        const li = document.createElement("li");
+                        li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+                        li.innerHTML = `
+${usuario.nome}
+<div>
+<!-- Botão de editar com ícone de lápis -->
+<button class="btn btn-outline-warning btn-sm me-2" onclick="editarUsuario(${usuario.id}, '${usuario.nome}')">
+<i class="bi bi-pencil-square fs-6"></i>
+</button>
+
+<!-- Botão de remover com ícone de lixeira -->
+<button class="btn btn-outline-danger btn-sm" onclick="deletarUsuario(${usuario.id})">
+<i class="bi bi-trash fs-6"></i>
+</button>
+</div>`;
+
+                        lista.appendChild(li);
+                    });
+                })
+                .catch(error => console.error("Erro ao carregar usuários:", error))
+}
+
+        // Função para salvar ou editar um usuário
+        document.getElementById("form").addEventListener("submit", function (event) {
+            event.preventDefault(); // Impede o recarregamento da página
+
+            const id = document.getElementById("id").value; // Obtém o ID oculto
+            const nome = document.getElementById("nome").value; // Obtém o nome digitado
+            const mensagem = document.getElementById("mensagem"); // Elemento de exibição de mensagem
+
+            // Validação: não permitir envio com nome vazio
+            if (!nome) {
+                mensagem.textContent = "Por favor, digite um nome!";
+                mensagem.style.color = "red";
+                mensagem.style.display = "block";
+                setTimeout(() => mensagem.style.display = "none", 3000);
+                return;
+            }
+
+            // Determina se será um cadastro novo ou edição
+            const url = id ? `http://localhost:3000/editar/${id}` : "http://localhost:3000/salvar&quot;;
+            const metodo = id ? "PUT" : "POST";
+
+            // Envia a requisição para o backend
+            fetch(url, {
+                method: metodo,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Exibe mensagem de sucesso
+                    mensagem.textContent = data.mensagem;
+                    mensagem.style.color = "green";
+                    mensagem.style.display = "block";
+                    setTimeout(() => mensagem.style.display = "none", 3000);
+
+                    // Limpa os campos do formulário
+                    document.getElementById("id").value = "";
+                    document.getElementById("nome").value = "";
+
+                    // Atualiza a lista de usuários
+                    carregarUsuarios();
+                })
+                .catch(error => console.error("Erro ao salvar:", error));
+        });
+
+        // Função para carregar os dados do usuário no formulário ao editar
+        function editarUsuario(id, nome) {
+            document.getElementById("id").value = id;
+            document.getElementById("nome").value = nome;
+        }
+
+        // Função para remover um usuário
+        function deletarUsuario(id) {
+            if (confirm("Tem certeza que deseja remover este usuário?")) {
+                fetch(`http://localhost:3000/deletar/${id}`, { method: "DELETE" })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.mensagem);
+                        carregarUsuarios(); // Atualiza lista após remoção
+                    })
+                    .catch(error => console.error("Erro ao remover usuário:", error));
+            }
+        }
+
+        // Chama a função para carregar os usuários assim que a página carregar
+        carregarUsuarios();
+    </script>
+</body>
+
+</html>
