@@ -1,67 +1,41 @@
-/* Importando Bootstrap para estilização moderna */
-@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css&#39;);
-
-/* Estilização do corpo da página 
-Define a fonte padrão da página 
-Define a cor de fundo da página para um tom claro 
-Remove as margens externas para um layout mais limpo 
-Remove os preenchimentos internos para evitar espaçamentos desnecessários */
+/* Importando Bootstrap (não é necessário aqui se já está no HTML) */
+/* @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'); */
 
 body {
-font-family: Arial, sans-serif;
-background-color: #f8f9fa;
-margin: 0;
-padding: 0;
-}
-
-/* Centralizando o formulário dentro da página /
-/ Define a largura máxima do contêiner para manter um tamanho adequado /
-/ Centraliza o formulário na tela automaticamente /
-/ Adiciona espaço interno ao contêiner para melhor visualização /
-/ Define um fundo branco para destacar o formulário /
-/ Adiciona uma sombra suave para um efeito de elevação /
-/ Arredonda as bordas do contêiner para um design moderno */
-.container {
-max-width: 400px;
-margin: 50px auto;
-padding: 20px;
-background: white;
-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-border-radius: 8px;
-}
-
-/* Estilização do título principal /
-/ Centraliza o texto do título /
-/ Adiciona um espaçamento abaixo do título para separação visual */
-h1 {
-text-align: center;
-margin-bottom: 20px;
-}
-
-/* Ajustando o botão para ocupar toda a largura /
-/ Faz com que o botão ocupe toda a largura disponível */
-button {
-width: 100%;
-}
-
-/* Ajuste da lista de usuários /
-/ Adiciona espaçamento acima da lista para melhor separação visual /
-/ Remove os marcadores padrão da lista para um visual mais limpo /
-/ Remove preenchimentos internos para alinhar corretamente os itens */
-#listaUsuarios {
-margin-top: 20px;
-list-style: none;
-padding: 0;
-}
-
-/* Estilização de cada item da lista de usuários /
-/ Define um fundo claro para os itens da lista, mantendo um contraste leve /
-/ Adiciona espaçamento interno para melhor leitura /
-/ Adiciona espaçamento entre os itens para organização /
-/ Arredonda as bordas dos itens para manter consistência com o design do formulário */
-#listaUsuarios li {
-background: #708ba6;
-padding: 10px;
-margin-bottom: 5px;
-border-radius: 4px;
-}
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  #listaUsuarios {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+  }
+  
+  #listaUsuarios li {
+    background: #708ba6;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+  }
+  
